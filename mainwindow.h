@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSystemTrayIcon>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,8 +15,22 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+private slots:
+    void slotExit();
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
+    void on_actionParametrs_triggered();
+
+    void on_actionClientsList_triggered();
 
 private:
+    void createUI();
+private:
     Ui::MainWindow *ui;
+    QSystemTrayIcon  *trayIcon;
+    bool toClose = false;
+
+    // QWidget interface
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 #endif // MAINWINDOW_H

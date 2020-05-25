@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Images/hotlinepts.ico</file>
+        <file>Images/logo.png</file>
+    </qresource>
+</RCC>
