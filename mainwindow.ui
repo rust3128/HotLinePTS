@@ -6,33 +6,76 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1280</width>
+    <height>960</height>
    </rect>
+  </property>
+  <property name="tabletTracking">
+   <bool>false</bool>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <property name="styleSheet">
+   <string notr="true">/*background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0558182, stop:0 rgba(106, 106, 106, 255), stop:1 rgba(191, 191, 191, 255));*/
+
+
+background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.498, y2:0, stop:0 rgba(81, 81, 81, 255), stop:1 rgba(185, 185, 185, 255));</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout"/>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1280</width>
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
+   <property name="styleSheet">
+    <string notr="true">/*background-color: qlineargradient(spread:reflect, x1:0, y1:0.943182, x2:0, y2:0.499, stop:0 rgba(51, 51, 51, 255), stop:1 rgba(191, 191, 191, 255));*/</string>
+   </property>
+   <widget class="QMenu" name="menuSettings">
     <property name="title">
      <string>Настройка</string>
     </property>
     <addaction name="actionParametrs"/>
     <addaction name="actionClientsList"/>
    </widget>
-   <addaction name="menu"/>
+   <addaction name="menuSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBarMain">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <widget class="QToolBar" name="toolBarClients">
+   <property name="windowTitle">
+    <string>toolBar_2</string>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">/*background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.501, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(171, 171, 171, 255));*/
+background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.498, y2:0, stop:0 rgba(81, 81, 81, 255), stop:1 rgba(185, 185, 185, 255));</string>
+   </property>
+   <property name="movable">
+    <bool>true</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>LeftToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
   <action name="actionParametrs">
    <property name="text">
     <string>Параметры</string>

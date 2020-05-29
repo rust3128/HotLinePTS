@@ -19,9 +19,11 @@ win32: RC_ICONS = $$PWD/Images/hotlinepts.ico
 
 SOURCES += \
     Clients/addclientdialog.cpp \
+    Clients/clientinfodialog.cpp \
     Clients/clientslistdialog.cpp \
     ConnectionSettingDialog/connectionsettingdialog.cpp \
     DataBase/database.cpp \
+    DynamicButton/dynamiicbutton.cpp \
     GlobalSettings/globalsettings.cpp \
     LoggingCategories/loggingcategories.cpp \
     OptionsDialog/optionsdialog.cpp \
@@ -30,9 +32,11 @@ SOURCES += \
 
 HEADERS += \
     Clients/addclientdialog.h \
+    Clients/clientinfodialog.h \
     Clients/clientslistdialog.h \
     ConnectionSettingDialog/connectionsettingdialog.h \
     DataBase/database.h \
+    DynamicButton/dynamiicbutton.h \
     GlobalSettings/globalsettings.h \
     LoggingCategories/loggingcategories.h \
     OptionsDialog/optionsdialog.h \
@@ -40,6 +44,7 @@ HEADERS += \
 
 FORMS += \
     Clients/addclientdialog.ui \
+    Clients/clientinfodialog.ui \
     Clients/clientslistdialog.ui \
     ConnectionSettingDialog/connectionsettingdialog.ui \
     OptionsDialog/optionsdialog.ui \

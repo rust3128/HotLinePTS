@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 
     qInfo(logInfo()) << "Запуск программы.";
     MainWindow w;
-    w.showMaximized();
+    w.show();
     return a.exec();
 }
 

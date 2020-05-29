@@ -4,6 +4,9 @@
 #include "GlobalSettings/globalsettings.h"
 #include "OptionsDialog/optionsdialog.h"
 #include "Clients/clientslistdialog.h"
+#include "DynamicButton/dynamiicbutton.h"
+#include "Clients/addclientdialog.h"
+
 
 
 #include <QSystemTrayIcon>
@@ -19,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     createUI();
+    setToolBarClient();
+    m_clnInfDlg=nullptr;
 }
 
 MainWindow::~MainWindow()
@@ -30,6 +35,8 @@ void MainWindow::slotExit()
 {
     toClose=true;
 }
+
+
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason)
 {
@@ -86,6 +93,67 @@ void MainWindow::createUI()
      * данного нажатия
      * */
     connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
+}
+
+void MainWindow::setToolBarClient()
+{
+    QSqlQuery q;
+
+    q.prepare("SELECT client_id, UPPER(name) FROM clients WHERE isactive = 'true' ORDER BY cnt DESC, client_ID");
+    if(!q.exec()){
+        qCritical(logCritical()) << "Не возможно получить список клиентов" << q.lastError().text();
+        return;
+    }
+    while(q.next()){
+         DynamiicButton *button = new DynamiicButton(q.value(0).toUInt(),this);
+         button->setText(q.value(1).toString());
+         button->setFlat(true);
+         button->setStyleSheet("font-size: 16px;"
+                               "font-weight: bold;"
+                               "font-variant: small-caps;"
+                               "font-family: serif;"
+                               "padding-left:10px;"
+                               "padding-right:10px;"
+                               "min-width: 140px;"
+                               "max-width: 1400px;"
+                               "min-height: 20px;"
+                               "max-height: 20px;");
+         ui->toolBarClients->addSeparator();
+         ui->toolBarClients->addWidget(button);
+
+          connect(button,&QAbstractButton::clicked,this,&MainWindow::slotGetNumberButton);
+     }
+    ui->toolBarClients->addSeparator();
+     q.finish();
+
+     QWidget *spacerWidget = new QWidget(this);
+     spacerWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+     spacerWidget->setVisible(true);
+     QPushButton *pbNewClient = new QPushButton(this);
+     pbNewClient->setStyleSheet("font-size: 16px;"
+                              "font-weight: bold;"
+                              "font-variant: small-caps;"
+                              "font-family: serif;"
+                              "padding-left:10px;"
+                              "padding-right:10px;"
+                              "min-width: 140px;"
+                              "max-width: 140px;"
+                              "min-height: 20px;"
+                              "max-height: 20px;");
+     pbNewClient->setText("Новый клиент");
+     pbNewClient->setFlat(true);
+
+     ui->toolBarClients->addWidget(spacerWidget);
+     ui->toolBarClients->addSeparator();
+     ui->toolBarClients->addWidget(pbNewClient);
+     ui->toolBarClients->addSeparator();
+     connect(pbNewClient,&QAbstractButton::clicked,[]() {
+         QSqlRecord r;
+         r.clear();
+         AddClientDialog *addClnDlg = new AddClientDialog(&r);
+         addClnDlg->exec();
+     });
+
 }
 
 
@@ -154,5 +222,24 @@ void MainWindow::on_actionClientsList_triggered()
     ClientsListDialog *clnLstDlg = new ClientsListDialog(this);
     clnLstDlg->setWindowTitle(this->windowTitle()+" - [Список клиентов]");
     clnLstDlg->exec();
+
+}
+
+void MainWindow::slotGetNumberButton()
+{
+    DynamiicButton *button = static_cast<DynamiicButton*>(sender());
+    QSqlQuery *q = new QSqlQuery();
+    const int clientID = button->getButtonID();
+    q->prepare("UPDATE clients SET cnt = cnt +1 WHERE client_id=:clientid");
+    q->bindValue(":clientid",clientID);
+    if(!q->exec()) qCritical(logCritical()) << "Не возможно выполнить запрос " << q->lastQuery() << q->lastError().text();
+    if (m_clnInfDlg)
+    {
+        m_clnInfDlg->deleteLater();
+    }
+    m_clnInfDlg = new ClientInfoDialog(clientID);
+    m_clnInfDlg->setAttribute(Qt::WA_DeleteOnClose);
+    this->setCentralWidget(m_clnInfDlg);
+//    m_clnInfDlg->show();
 
 }

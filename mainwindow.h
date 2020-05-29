@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSystemTrayIcon>
+#include "Clients/clientinfodialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,17 +18,19 @@ public:
     ~MainWindow();
 private slots:
     void slotExit();
+    void slotGetNumberButton();
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void on_actionParametrs_triggered();
-
     void on_actionClientsList_triggered();
 
 private:
     void createUI();
+    void setToolBarClient();
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon  *trayIcon;
     bool toClose = false;
+    ClientInfoDialog *m_clnInfDlg;
 
     // QWidget interface
 protected:
