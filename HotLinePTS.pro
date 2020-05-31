@@ -21,6 +21,7 @@ SOURCES += \
     Clients/addclientdialog.cpp \
     Clients/clientinfodialog.cpp \
     Clients/clientslistdialog.cpp \
+    Clients/editobjectdialog.cpp \
     ConnectionSettingDialog/connectionsettingdialog.cpp \
     DataBase/database.cpp \
     DynamicButton/dynamiicbutton.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     Clients/addclientdialog.h \
     Clients/clientinfodialog.h \
     Clients/clientslistdialog.h \
+    Clients/editobjectdialog.h \
     ConnectionSettingDialog/connectionsettingdialog.h \
     DataBase/database.h \
     DynamicButton/dynamiicbutton.h \
@@ -46,6 +48,7 @@ FORMS += \
     Clients/addclientdialog.ui \
     Clients/clientinfodialog.ui \
     Clients/clientslistdialog.ui \
+    Clients/editobjectdialog.ui \
     ConnectionSettingDialog/connectionsettingdialog.ui \
     OptionsDialog/optionsdialog.ui \
     mainwindow.ui

@@ -1,6 +1,7 @@
 #include "clientinfodialog.h"
 #include "ui_clientinfodialog.h"
 #include "LoggingCategories/loggingcategories.h"
+#include "Clients/editobjectdialog.h"
 
 
 #include <QSqlQuery>
@@ -100,3 +101,9 @@ void ClientInfoDialog::createTitle()
 
 
 
+
+void ClientInfoDialog::on_tableViewObjects_doubleClicked(const QModelIndex &index)
+{
+    EditObjectDialog *edObjDlg = new EditObjectDialog(this);
+    edObjDlg->exec();
+}

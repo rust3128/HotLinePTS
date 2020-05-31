@@ -22,6 +22,8 @@ protected:
 
 private slots:
 
+    void on_tableViewObjects_doubleClicked(const QModelIndex &index);
+
 private:
     void createUI();
     void createConnections();
