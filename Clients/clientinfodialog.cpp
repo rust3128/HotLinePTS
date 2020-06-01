@@ -96,14 +96,10 @@ void ClientInfoDialog::createTitle()
 }
 
 
-
-
-
-
-
-
-void ClientInfoDialog::on_tableViewObjects_doubleClicked(const QModelIndex &index)
+void ClientInfoDialog::on_tableViewObjects_doubleClicked(const QModelIndex &idx)
 {
-    EditObjectDialog *edObjDlg = new EditObjectDialog(this);
+    QSqlRecord rec;
+    rec = modelObjects->record(idx.row());
+    EditObjectDialog *edObjDlg = new EditObjectDialog(&rec, ui->labelName->text(), this);
     edObjDlg->exec();
 }

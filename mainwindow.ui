@@ -20,7 +20,7 @@
    <string notr="true">/*background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0558182, stop:0 rgba(106, 106, 106, 255), stop:1 rgba(191, 191, 191, 255));*/
 
 
-background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.498, y2:0, stop:0 rgba(81, 81, 81, 255), stop:1 rgba(185, 185, 185, 255));</string>
+/*background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.498, y2:0, stop:0 rgba(81, 81, 81, 255), stop:1 rgba(185, 185, 185, 255));*/</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout"/>
@@ -31,7 +31,7 @@ background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.498, y2:0, st
      <x>0</x>
      <y>0</y>
      <width>1280</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -64,7 +64,9 @@ background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.498, y2:0, st
    </property>
    <property name="styleSheet">
     <string notr="true">/*background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.501, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(171, 171, 171, 255));*/
-background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.498, y2:0, stop:0 rgba(81, 81, 81, 255), stop:1 rgba(185, 185, 185, 255));</string>
+
+
+/*background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.498, y2:0, stop:0 rgba(81, 81, 81, 255), stop:1 rgba(185, 185, 185, 255));*/</string>
    </property>
    <property name="movable">
     <bool>true</bool>

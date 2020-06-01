@@ -22,7 +22,7 @@ protected:
 
 private slots:
 
-    void on_tableViewObjects_doubleClicked(const QModelIndex &index);
+    void on_tableViewObjects_doubleClicked(const QModelIndex &idx);
 
 private:
     void createUI();
@@ -34,6 +34,7 @@ private:
     Ui::ClientInfoDialog *ui;
     uint clientID;
     QSqlQueryModel *modelObjects = nullptr;
+
 };
 
 #endif // CLIENTINFODIALOG_H
