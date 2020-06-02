@@ -43,24 +43,27 @@ void ClientInfoDialog::changeEvent(QEvent *e)
 
 void ClientInfoDialog::createModel()
 {
-    QString strSQL = QString("select o.terminal_id, o.name,o.phone,o.phonedir, o.email from objects o "
+    QString strSQL = QString("select o.object_id, o.terminal_id, o.name,o.phone,o.phonedir, o.email, o.comments from objects o "
                              "where o.client_id=%1 and o.isactive = 'true' "
                              "order by o.terminal_id").arg(clientID);
     modelObjects = new QSqlQueryModel(this);
     modelObjects->setQuery(strSQL);
-    modelObjects->setHeaderData(0,Qt::Horizontal, "№ АЗС");
-    modelObjects->setHeaderData(1,Qt::Horizontal, "Расположение");
-    modelObjects->setHeaderData(2,Qt::Horizontal, "Телефон АЗС");
-    modelObjects->setHeaderData(3,Qt::Horizontal, "Тел.Директора");
-    modelObjects->setHeaderData(4,Qt::Horizontal, "E-mail");
+    modelObjects->setHeaderData(1,Qt::Horizontal, "№ АЗС");
+    modelObjects->setHeaderData(2,Qt::Horizontal, "Расположение");
+    modelObjects->setHeaderData(3,Qt::Horizontal, "Телефон АЗС");
+    modelObjects->setHeaderData(4,Qt::Horizontal, "Тел.Директора");
+    modelObjects->setHeaderData(5,Qt::Horizontal, "E-mail");
+    modelObjects->setHeaderData(6,Qt::Horizontal, "Примечания");
 }
 void ClientInfoDialog::createUI()
 {
 
     ui->tableViewObjects->setModel(modelObjects);
     ui->tableViewObjects->verticalHeader()->hide();
+    ui->tableViewObjects->hideColumn(0);
     ui->tableViewObjects->resizeColumnsToContents();
     ui->tableViewObjects->resizeRowsToContents();
+    ui->tableViewObjects->horizontalHeader()->setStretchLastSection(true);
 
     QString SS =QString("QHeaderView::section {background-color: qlineargradient(spread:reflect, x1:0, y1:0, x2:0.498, y2:0, stop:0 rgba(81, 81, 81, 255), stop:1 rgba(185, 185, 185, 255));"
                         "font-weight: bold;}");
@@ -101,5 +104,6 @@ void ClientInfoDialog::on_tableViewObjects_doubleClicked(const QModelIndex &idx)
     QSqlRecord rec;
     rec = modelObjects->record(idx.row());
     EditObjectDialog *edObjDlg = new EditObjectDialog(&rec, ui->labelName->text(), this);
-    edObjDlg->exec();
+    if(edObjDlg->exec() == QDialog::Accepted)
+        modelObjects->setQuery(modelObjects->query().lastQuery());
 }

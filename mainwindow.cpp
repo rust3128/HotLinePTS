@@ -229,7 +229,7 @@ void MainWindow::slotGetNumberButton()
 {
     DynamiicButton *button = static_cast<DynamiicButton*>(sender());
     QSqlQuery *q = new QSqlQuery();
-    const int clientID = button->getButtonID();
+    const uint clientID = button->getButtonID();
     q->prepare("UPDATE clients SET cnt = cnt +1 WHERE client_id=:clientid");
     q->bindValue(":clientid",clientID);
     if(!q->exec()) qCritical(logCritical()) << "Не возможно выполнить запрос " << q->lastQuery() << q->lastError().text();

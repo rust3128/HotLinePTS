@@ -15,11 +15,19 @@ class EditObjectDialog : public QDialog
 public:
     explicit EditObjectDialog(QSqlRecord *rec, QString clnName, QWidget *parent = nullptr);
     ~EditObjectDialog();
+private slots:
+    void on_plainTextEditComments_textChanged();
+
+    void on_buttonBox_rejected();
+
+    void on_buttonBox_accepted();
+
 private:
     void createUI();
 private:
     Ui::EditObjectDialog *ui;
     QSqlRecord *curRecord;
+
 };
 
 #endif // EDITOBJECTDIALOG_H

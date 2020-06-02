@@ -16,6 +16,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/Images/logo.png</normaloff>:/Images/logo.png</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true">/*background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0.0558182, stop:0 rgba(106, 106, 106, 255), stop:1 rgba(191, 191, 191, 255));*/
 
@@ -89,6 +93,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
