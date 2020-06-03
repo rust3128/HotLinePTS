@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>Images/hotlinepts.ico</file>
         <file>Images/logo.png</file>
+        <file>Images/MigrateOptionsicon.png</file>
+        <file>Images/hotlineflesh.png</file>
     </qresource>
 </RCC>
