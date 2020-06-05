@@ -24,6 +24,7 @@ SOURCES += \
     Clients/editobjectdialog.cpp \
     ConnectionSettingDialog/connectionsettingdialog.cpp \
     DataBase/database.cpp \
+    DeskBook/migrateoptionsdialog.cpp \
     DynamicButton/dynamiicbutton.cpp \
     GlobalSettings/globalsettings.cpp \
     LoggingCategories/loggingcategories.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
     Clients/editobjectdialog.h \
     ConnectionSettingDialog/connectionsettingdialog.h \
     DataBase/database.h \
+    DeskBook/migrateoptionsdialog.h \
     DynamicButton/dynamiicbutton.h \
     GlobalSettings/globalsettings.h \
     LoggingCategories/loggingcategories.h \
@@ -50,6 +52,7 @@ FORMS += \
     Clients/clientslistdialog.ui \
     Clients/editobjectdialog.ui \
     ConnectionSettingDialog/connectionsettingdialog.ui \
+    DeskBook/migrateoptionsdialog.ui \
     OptionsDialog/optionsdialog.ui \
     mainwindow.ui
 

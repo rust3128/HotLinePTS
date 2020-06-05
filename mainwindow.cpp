@@ -6,7 +6,7 @@
 #include "Clients/clientslistdialog.h"
 #include "DynamicButton/dynamiicbutton.h"
 #include "Clients/addclientdialog.h"
-
+#include "DeskBook/migrateoptionsdialog.h"
 
 
 #include <QSystemTrayIcon>
@@ -242,4 +242,10 @@ void MainWindow::slotGetNumberButton()
     this->setCentralWidget(m_clnInfDlg);
 //    m_clnInfDlg->show();
 
+}
+
+void MainWindow::on_actionMigrateOptions_triggered()
+{
+    MigrateOptionsDialog *mgOptDlg = new MigrateOptionsDialog();
+    this->setCentralWidget(mgOptDlg);
 }

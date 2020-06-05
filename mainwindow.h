@@ -23,6 +23,8 @@ private slots:
     void on_actionParametrs_triggered();
     void on_actionClientsList_triggered();
 
+    void on_actionMigrateOptions_triggered();
+
 private:
     void createUI();
     void setToolBarClient();

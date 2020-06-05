@@ -4,5 +4,6 @@
         <file>Images/logo.png</file>
         <file>Images/MigrateOptionsicon.png</file>
         <file>Images/hotlineflesh.png</file>
+        <file>Images/add-icon.png</file>
     </qresource>
 </RCC>
