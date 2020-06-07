@@ -24,6 +24,8 @@ private slots:
 
     void on_tableViewObjects_doubleClicked(const QModelIndex &idx);
 
+    void on_toolButton_clicked();
+
 private:
     void createUI();
     void createConnections();

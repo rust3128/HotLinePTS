@@ -13,7 +13,7 @@ class EditObjectDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit EditObjectDialog(QSqlRecord *rec, QString clnName, QWidget *parent = nullptr);
+    explicit EditObjectDialog(QSqlRecord *rec, QString clnName, uint clnID, QWidget *parent = nullptr);
     ~EditObjectDialog();
 private slots:
     void on_plainTextEditComments_textChanged();
@@ -27,6 +27,7 @@ private:
 private:
     Ui::EditObjectDialog *ui;
     QSqlRecord *curRecord;
+    uint clientID;
 
 };
 

@@ -103,7 +103,16 @@ void ClientInfoDialog::on_tableViewObjects_doubleClicked(const QModelIndex &idx)
 {
     QSqlRecord rec;
     rec = modelObjects->record(idx.row());
-    EditObjectDialog *edObjDlg = new EditObjectDialog(&rec, ui->labelName->text(), this);
+    EditObjectDialog *edObjDlg = new EditObjectDialog(&rec, ui->labelName->text(), clientID, this);
+    if(edObjDlg->exec() == QDialog::Accepted)
+        modelObjects->setQuery(modelObjects->query().lastQuery());
+}
+
+void ClientInfoDialog::on_toolButton_clicked()
+{
+    QSqlRecord rec;
+    rec.clear();
+    EditObjectDialog *edObjDlg = new EditObjectDialog(&rec, ui->labelName->text(), clientID, this);
     if(edObjDlg->exec() == QDialog::Accepted)
         modelObjects->setQuery(modelObjects->query().lastQuery());
 }

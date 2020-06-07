@@ -246,6 +246,6 @@ void MainWindow::slotGetNumberButton()
 
 void MainWindow::on_actionMigrateOptions_triggered()
 {
-    MigrateOptionsDialog *mgOptDlg = new MigrateOptionsDialog();
-    this->setCentralWidget(mgOptDlg);
+    MigrateOptionsDialog *mgOptDlg = new MigrateOptionsDialog(this);
+    mgOptDlg->show();
 }
