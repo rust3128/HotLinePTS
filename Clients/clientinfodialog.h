@@ -20,8 +20,11 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
-private slots:
+signals:
+    void signalSendID(int);
 
+private slots:
+    void slotSelectTerminals(const QItemSelection &, const QItemSelection &);
     void on_tableViewObjects_doubleClicked(const QModelIndex &idx);
 
     void on_toolButton_clicked();

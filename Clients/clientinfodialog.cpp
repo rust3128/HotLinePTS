@@ -2,6 +2,7 @@
 #include "ui_clientinfodialog.h"
 #include "LoggingCategories/loggingcategories.h"
 #include "Clients/editobjectdialog.h"
+#include "Clients/pcviewform.h"
 
 
 #include <QSqlQuery>
@@ -20,6 +21,8 @@ ClientInfoDialog::ClientInfoDialog(uint ID, QWidget *parent) :
     createUI();
     createConnections();
     createTitle();
+    connect(ui->tableViewObjects->selectionModel(),&QItemSelectionModel::selectionChanged,this,&ClientInfoDialog::slotSelectTerminals);
+    connect(this,&ClientInfoDialog::signalSendID,ui->widgetPC,&PCViewForm::slotGetObjectID);
 
 }
 
@@ -39,6 +42,7 @@ void ClientInfoDialog::changeEvent(QEvent *e)
         break;
     }
 }
+
 
 
 void ClientInfoDialog::createModel()
@@ -115,4 +119,12 @@ void ClientInfoDialog::on_toolButton_clicked()
     EditObjectDialog *edObjDlg = new EditObjectDialog(&rec, ui->labelName->text(), clientID, this);
     if(edObjDlg->exec() == QDialog::Accepted)
         modelObjects->setQuery(modelObjects->query().lastQuery());
+}
+
+
+void ClientInfoDialog::slotSelectTerminals(const QItemSelection &, const QItemSelection &)
+{
+    QModelIndexList selection = ui->tableViewObjects->selectionModel()->selectedIndexes();
+    qInfo(logInfo()) << "Selected ID" << modelObjects->data(modelObjects->index(selection.at(0).row(),0),Qt::DisplayRole).toInt();
+    emit signalSendID(modelObjects->data(modelObjects->index(selection.at(0).row(),0),Qt::DisplayRole).toInt());
 }

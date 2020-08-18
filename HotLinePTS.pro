@@ -22,6 +22,7 @@ SOURCES += \
     Clients/clientinfodialog.cpp \
     Clients/clientslistdialog.cpp \
     Clients/editobjectdialog.cpp \
+    Clients/pcviewform.cpp \
     ConnectionSettingDialog/connectionsettingdialog.cpp \
     DataBase/database.cpp \
     DeskBook/migrateoptionsdialog.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     Clients/clientinfodialog.h \
     Clients/clientslistdialog.h \
     Clients/editobjectdialog.h \
+    Clients/pcviewform.h \
     ConnectionSettingDialog/connectionsettingdialog.h \
     DataBase/database.h \
     DeskBook/migrateoptionsdialog.h \
@@ -51,6 +53,7 @@ FORMS += \
     Clients/clientinfodialog.ui \
     Clients/clientslistdialog.ui \
     Clients/editobjectdialog.ui \
+    Clients/pcviewform.ui \
     ConnectionSettingDialog/connectionsettingdialog.ui \
     DeskBook/migrateoptionsdialog.ui \
     OptionsDialog/optionsdialog.ui \
