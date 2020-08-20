@@ -21,7 +21,7 @@ protected:
     void changeEvent(QEvent *e);
 
 signals:
-    void signalSendID(int);
+    void signalSendID(uint, uint);
 
 private slots:
     void slotSelectTerminals(const QItemSelection &, const QItemSelection &);

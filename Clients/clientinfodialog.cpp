@@ -61,6 +61,15 @@ void ClientInfoDialog::createModel()
 }
 void ClientInfoDialog::createUI()
 {
+    qApp->setStyleSheet(
+        "QSplitter::handle:vertical   {height: 6px; image: url(images/vsplitter.png);}"
+        "QSplitter::handle:horizontal {width:  6px; image: url(images/hsplitter.png);}"
+        );
+
+
+    ui->splitter->setStretchFactor(0,1);
+    ui->splitter->setStretchFactor(1,0);
+    ui->widgetPC->hide();
 
     ui->tableViewObjects->setModel(modelObjects);
     ui->tableViewObjects->verticalHeader()->hide();
@@ -124,7 +133,8 @@ void ClientInfoDialog::on_toolButton_clicked()
 
 void ClientInfoDialog::slotSelectTerminals(const QItemSelection &, const QItemSelection &)
 {
+    if(ui->widgetPC->isHidden())
+        ui->widgetPC->show();
     QModelIndexList selection = ui->tableViewObjects->selectionModel()->selectedIndexes();
-    qInfo(logInfo()) << "Selected ID" << modelObjects->data(modelObjects->index(selection.at(0).row(),0),Qt::DisplayRole).toInt();
-    emit signalSendID(modelObjects->data(modelObjects->index(selection.at(0).row(),0),Qt::DisplayRole).toInt());
+    emit signalSendID(clientID, modelObjects->data(modelObjects->index(selection.at(0).row(),0),Qt::DisplayRole).toUInt());
 }

@@ -2,6 +2,7 @@
 #define PCVIEWFORM_H
 
 #include <QWidget>
+#include <QAbstractButton>
 
 namespace Ui {
 class PCViewForm;
@@ -16,13 +17,22 @@ public:
     ~PCViewForm();
 
 public slots:
-    void slotGetObjectID(int ID);
+    void slotGetObjectID(uint clnID, uint objID);
 protected:
     void changeEvent(QEvent *e);
 
+private slots:
+    void slotChangeIBEConn();
+    void on_buttonBoxFB_clicked(QAbstractButton *button);
+
+private:
+    void createConnections();
+    void showObjectFB();
+    void saveObjectFB();
 private:
     Ui::PCViewForm *ui;
-    int objectID;
+    uint objectID;
+    uint clientID;
 };
 
 #endif // PCVIEWFORM_H
