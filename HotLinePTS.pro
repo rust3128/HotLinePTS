@@ -23,6 +23,8 @@ SOURCES += \
     Clients/clientslistdialog.cpp \
     Clients/editobjectdialog.cpp \
     Clients/pcviewform.cpp \
+    Clients/treeitem.cpp \
+    Clients/treepcmodel.cpp \
     ConnectionSettingDialog/connectionsettingdialog.cpp \
     DataBase/database.cpp \
     DeskBook/migrateoptionsdialog.cpp \
@@ -39,6 +41,8 @@ HEADERS += \
     Clients/clientslistdialog.h \
     Clients/editobjectdialog.h \
     Clients/pcviewform.h \
+    Clients/treeitem.h \
+    Clients/treepcmodel.h \
     ConnectionSettingDialog/connectionsettingdialog.h \
     DataBase/database.h \
     DeskBook/migrateoptionsdialog.h \

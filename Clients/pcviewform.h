@@ -1,6 +1,8 @@
 #ifndef PCVIEWFORM_H
 #define PCVIEWFORM_H
 
+#include "Clients/treepcmodel.h"
+
 #include <QWidget>
 #include <QAbstractButton>
 
@@ -29,10 +31,12 @@ private:
     void createConnections();
     void showObjectFB();
     void saveObjectFB();
+    void showObjectPC();
 private:
     Ui::PCViewForm *ui;
     uint objectID;
     uint clientID;
+    TreePCModel *modelPC;
 };
 
 #endif // PCVIEWFORM_H

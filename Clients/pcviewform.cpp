@@ -2,6 +2,7 @@
 #include "ui_pcviewform.h"
 #include "LoggingCategories/loggingcategories.h"
 
+
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
@@ -37,6 +38,7 @@ PCViewForm::PCViewForm(QWidget *parent) :
                                 "color: white;"
                             "}");
 
+
     createConnections();
 }
 
@@ -50,6 +52,8 @@ void PCViewForm::slotGetObjectID(uint clnID, uint objID)
     objectID = objID;
     clientID = clnID;
 
+    modelPC = new TreePCModel(objectID,this);
+    showObjectPC();
     showObjectFB();
 }
 
@@ -129,6 +133,13 @@ void PCViewForm::saveObjectFB()
     q->bindValue(":database", ui->lineEditDatabaseName->text().trimmed());
     if(!q->exec())
         qInfo(logInfo()) << "Не удалось обновить параметры сервера FB" << q->lastError().text();
+}
+
+void PCViewForm::showObjectPC()
+{
+    ui->treeViewPC->setModel(modelPC);
+    ui->treeViewPC->resizeColumnToContents(0);
+    ui->treeViewPC->resizeColumnToContents(1);
 }
 
 void PCViewForm::slotChangeIBEConn()
