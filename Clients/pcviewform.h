@@ -27,6 +27,10 @@ private slots:
     void slotChangeIBEConn();
     void on_buttonBoxFB_clicked(QAbstractButton *button);
 
+    void on_treeViewPC_doubleClicked(const QModelIndex &idx);
+
+    void on_treeViewPC_expanded(const QModelIndex &index);
+
 private:
     void createConnections();
     void showObjectFB();

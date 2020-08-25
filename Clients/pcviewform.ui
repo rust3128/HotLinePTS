@@ -66,7 +66,17 @@ QToolBox::tab:first#toolBoxMain {background: #4ade00;
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">
-        <widget class="QTreeView" name="treeViewPC"/>
+        <widget class="QTreeView" name="treeViewPC">
+         <property name="autoExpandDelay">
+          <number>-1</number>
+         </property>
+         <property name="animated">
+          <bool>true</bool>
+         </property>
+         <attribute name="headerVisible">
+          <bool>true</bool>
+         </attribute>
+        </widget>
        </item>
       </layout>
      </widget>

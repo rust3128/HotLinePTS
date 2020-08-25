@@ -137,9 +137,12 @@ void PCViewForm::saveObjectFB()
 
 void PCViewForm::showObjectPC()
 {
+
     ui->treeViewPC->setModel(modelPC);
+
     ui->treeViewPC->resizeColumnToContents(0);
     ui->treeViewPC->resizeColumnToContents(1);
+    ui->treeViewPC->hideColumn(2);
 }
 
 void PCViewForm::slotChangeIBEConn()
@@ -149,4 +152,18 @@ void PCViewForm::slotChangeIBEConn()
     database = (ui->lineEditDatabaseName->text().trimmed().size()==0) ? "" : ":"+ui->lineEditDatabaseName->text().trimmed();
     port = (ui->lineEditPortFB->text().trimmed().size()==0) ? "" : "/"+ui->lineEditPortFB->text().trimmed();
     ui->lineEditIBEConnect->setText(server+port+database);
+}
+
+void PCViewForm::on_treeViewPC_doubleClicked(const QModelIndex &idx)
+{
+//    QModelIndex parentIndex = idx.parent();
+//            modelPC->index(idx.row(),idx.column(), QModelIndex());
+//    qInfo(logInfo()) << "parentindex row" << parentIndex.row() << "parentindex column" << parentIndex.column()  << "row" << idx.row() << "column" << idx.column() ;
+}
+
+void PCViewForm::on_treeViewPC_expanded(const QModelIndex &index)
+{
+    Q_UNUSED(index)
+    ui->treeViewPC->resizeColumnToContents(0);
+    ui->treeViewPC->resizeColumnToContents(1);
 }
