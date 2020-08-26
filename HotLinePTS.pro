@@ -22,6 +22,7 @@ SOURCES += \
     Clients/clientinfodialog.cpp \
     Clients/clientslistdialog.cpp \
     Clients/editobjectdialog.cpp \
+    Clients/pceditdialog.cpp \
     Clients/pcviewform.cpp \
     Clients/treeitem.cpp \
     Clients/treepcmodel.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     Clients/clientinfodialog.h \
     Clients/clientslistdialog.h \
     Clients/editobjectdialog.h \
+    Clients/pceditdialog.h \
     Clients/pcviewform.h \
     Clients/treeitem.h \
     Clients/treepcmodel.h \
@@ -57,6 +59,7 @@ FORMS += \
     Clients/clientinfodialog.ui \
     Clients/clientslistdialog.ui \
     Clients/editobjectdialog.ui \
+    Clients/pceditdialog.ui \
     Clients/pcviewform.ui \
     ConnectionSettingDialog/connectionsettingdialog.ui \
     DeskBook/migrateoptionsdialog.ui \

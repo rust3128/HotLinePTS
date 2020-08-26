@@ -1,6 +1,7 @@
 #include "pcviewform.h"
 #include "ui_pcviewform.h"
 #include "LoggingCategories/loggingcategories.h"
+#include "pceditdialog.h"
 
 
 #include <QSqlQuery>
@@ -166,4 +167,20 @@ void PCViewForm::on_treeViewPC_expanded(const QModelIndex &index)
     Q_UNUSED(index)
     ui->treeViewPC->resizeColumnToContents(0);
     ui->treeViewPC->resizeColumnToContents(1);
+}
+
+
+void PCViewForm::on_toolButtonPCEdit_clicked()
+{
+    QModelIndex idx = ui->treeViewPC->currentIndex();
+    if(!idx.isValid()){
+        return;
+    }
+    QModelIndex parentIndex = idx.parent();
+    if(!parentIndex.isValid()){
+        parentIndex = idx;
+    }
+    PCEditDialog *pcDlg = new PCEditDialog(modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toUInt(),objectID,this);
+//    qInfo(logInfo()) << "column 2" << modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toString();
+    pcDlg->exec();
 }

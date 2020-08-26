@@ -31,6 +31,8 @@ private slots:
 
     void on_treeViewPC_expanded(const QModelIndex &index);
 
+    void on_toolButtonPCEdit_clicked();
+
 private:
     void createConnections();
     void showObjectFB();

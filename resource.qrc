@@ -5,5 +5,7 @@
         <file>Images/MigrateOptionsicon.png</file>
         <file>Images/hotlineflesh.png</file>
         <file>Images/add-icon.png</file>
+        <file>Images/pcedit.png</file>
+        <file>Images/Button-Add-icon.png</file>
     </qresource>
 </RCC>

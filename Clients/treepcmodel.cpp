@@ -92,6 +92,7 @@ QVariant TreePCModel::headerData(int section, Qt::Orientation orientation, int r
         return rootItem->data(section);
 
     return QVariant();
+
 }
 
 Qt::ItemFlags TreePCModel::flags(const QModelIndex &index) const
@@ -126,20 +127,20 @@ void TreePCModel::setupModelData(TreeItem *parent)
     while (q.next()) {
         position = 0;
         columnData.clear();
-        columnData << q.value(0).toString() << q.value(1).toString() << q.value(6).toString();
+        columnData <<  ((q.value(0).toString().size()==0) ? "Не указано" : q.value(0).toString()) << "PosID "+q.value(1).toString() << q.value(6).toString();
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
 
         columnData.clear();
-        columnData << "IP" << q.value(2).toString()<< q.value(6).toString();
+        columnData << "IP" << ((q.value(2).toString().size()==0) ? "Не известно" : q.value(2).toString())<< q.value(6).toString();
         parents << parents.last()->child(parents.last()->childCount()-1);
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
 
         columnData.clear();
-        columnData << "Модель" << q.value(4).toString()<< q.value(6).toString();
+        columnData << "Модель" << ((q.value(4).toString().size()==0) ? "Не известно" : q.value(4).toString())<< q.value(6).toString();
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
 
         columnData.clear();
-        columnData << "ОС" << q.value(5).toString()<< q.value(6).toString();
+        columnData << "ОС" << ((q.value(5).toString().size()==0) ? "Не известно" : q.value(5).toString()) << q.value(6).toString();
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
 
         parents.pop_back();
