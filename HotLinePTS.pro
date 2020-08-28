@@ -19,6 +19,7 @@ win32: RC_ICONS = $$PWD/Images/hotlinepts.ico
 
 SOURCES += \
     Clients/addclientdialog.cpp \
+    Clients/addostypedialog.cpp \
     Clients/clientinfodialog.cpp \
     Clients/clientslistdialog.cpp \
     Clients/editobjectdialog.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
 
 HEADERS += \
     Clients/addclientdialog.h \
+    Clients/addostypedialog.h \
     Clients/clientinfodialog.h \
     Clients/clientslistdialog.h \
     Clients/editobjectdialog.h \
@@ -56,6 +58,7 @@ HEADERS += \
 
 FORMS += \
     Clients/addclientdialog.ui \
+    Clients/addostypedialog.ui \
     Clients/clientinfodialog.ui \
     Clients/clientslistdialog.ui \
     Clients/editobjectdialog.ui \

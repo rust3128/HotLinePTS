@@ -2,6 +2,8 @@
 #define PCEDITDIALOG_H
 
 #include <QDialog>
+#include <QSqlTableModel>
+#include <QSqlQueryModel>
 
 namespace Ui {
 class PCEditDialog;
@@ -19,6 +21,11 @@ protected:
     void changeEvent(QEvent *e);
 
 
+private slots:
+    void on_toolButtonAddModelPC_clicked();
+
+    void on_toolButtonAddOSType_clicked();
+
 private:
     void createUI();
     void createModel();
@@ -26,6 +33,8 @@ private:
     Ui::PCEditDialog *ui;
     uint pcID;
     uint objectID;
+    QSqlTableModel *modelPCType;
+    QSqlTableModel *modelPCModel;
 };
 
 #endif // PCEDITDIALOG_H
