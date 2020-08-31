@@ -5,6 +5,7 @@
 
 #include <QWidget>
 #include <QAbstractButton>
+#include <QProcess>
 
 namespace Ui {
 class PCViewForm;
@@ -25,6 +26,7 @@ protected:
 
 private slots:
     void slotChangeIBEConn();
+//    void slotFinVNC();
     void on_buttonBoxFB_clicked(QAbstractButton *button);
 
     void on_treeViewPC_doubleClicked(const QModelIndex &idx);
@@ -43,6 +45,7 @@ private:
     uint objectID;
     uint clientID;
     TreePCModel *modelPC;
+    QProcess *vncStart;
 };
 
 #endif // PCVIEWFORM_H

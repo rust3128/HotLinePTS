@@ -28,6 +28,10 @@ private slots:
 
     void on_buttonBox_accepted();
 
+    void on_lineEditVNClient_textChanged(const QString &str);
+
+    void on_toolButtonFindVNC_clicked();
+
 private:
     void createUI();
 private:

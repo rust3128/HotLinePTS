@@ -1,12 +1,14 @@
 #include "pcviewform.h"
 #include "ui_pcviewform.h"
 #include "LoggingCategories/loggingcategories.h"
+#include "GlobalSettings/globalsettings.h"
 #include "pceditdialog.h"
 
 
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
+
 
 PCViewForm::PCViewForm(QWidget *parent) :
     QWidget(parent),
@@ -144,6 +146,7 @@ void PCViewForm::showObjectPC()
     ui->treeViewPC->resizeColumnToContents(0);
     ui->treeViewPC->resizeColumnToContents(1);
     ui->treeViewPC->hideColumn(2);
+    ui->treeViewPC->expandAll();
 }
 
 void PCViewForm::slotChangeIBEConn()
@@ -155,13 +158,74 @@ void PCViewForm::slotChangeIBEConn()
     ui->lineEditIBEConnect->setText(server+port+database);
 }
 
+
+
 void PCViewForm::on_treeViewPC_doubleClicked(const QModelIndex &idx)
 {
 //    QModelIndex parentIndex = idx.parent();
 //            modelPC->index(idx.row(),idx.column(), QModelIndex());
 //    qInfo(logInfo()) << "parentindex row" << parentIndex.row() << "parentindex column" << parentIndex.column()  << "row" << idx.row() << "column" << idx.column() ;
+    if(!idx.isValid()){
+        return;
+    }
+    QModelIndex parentIndex = idx.parent();
+    if(!parentIndex.isValid()){
+        parentIndex = idx;
+    }
+
+    QStringList argum;
+    QString command, ip, pass;
+    QSqlQuery q;
+
+    q.prepare("select l.ipadress, l.vncpass from pclist l where l.pc_id =:pcID");
+    q.bindValue(":pcID",modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toUInt());
+    q.exec();
+    q.next();
+    ip = q.value(0).toString();
+    pass = q.value(1).toString();
+    q.finish();
+
+    q.prepare("SELECT optionvalue FROM options WHERE option_id = :optionID");
+    q.bindValue(":optionID", GlobalSettings::OPT_VNC_CLIENT_PATH);
+    q.exec();
+    q.next();
+    command = q.value(0).toString();
+    q.finish();
+
+#ifdef Q_OS_WIN
+    argum << ip << pass;
+#else
+    command = "vncviewer";
+    argum << ip;
+#endif
+    if(command.length()==0) {
+        QMessageBox::critical(this, qApp->tr("Не могу выполнить подключение по VNC"),
+                              QString("Отсутсвует настройка по VNC подключению.\n"
+                                      "Зайдите в меню Настройка->Параметры."),
+                              QMessageBox::Ok);
+        return;
+    }
+
+
+
+    vncStart = new QProcess(this);
+
+//    connect(vncStart, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+//          [=](int exitCode, QProcess::ExitStatus exitStatus){ /* ... */ });
+
+
+//    connect(vncStart, SIGNAL(finished(int,QProcess::ExitStatus) , this, SLOT(finVNC()));
+//    vncStart->setReadChannel(QProcess::StandardError);
+    vncStart->start(command,argum);
+//    connect(vncStart, &QProcess::finished(),this,&PCViewForm::slotFinVNC());
 }
 
+//void PCViewForm::slotFinVNC()
+//{
+//    QByteArray *arr = new QByteArray;
+//    *arr = vncStart->readAllStandardOutput ();
+//    qCritical(logCritical()) << "VNC Error" << arr->data();
+//}
 void PCViewForm::on_treeViewPC_expanded(const QModelIndex &index)
 {
     Q_UNUSED(index)

@@ -42,5 +42,11 @@ void AddOSTypeDialog::on_buttonBox_accepted()
     if(ui->radioButton32->isChecked()) osName += ui->radioButton32->text();
     if(ui->radioButton64->isChecked()) osName += ui->radioButton64->text();
 
+    qInfo(logInfo()) << osName;
+    QSqlQuery q;
+    q.prepare("UPDATE OR INSERT INTO PCOS (PCOS) VALUES (:osname) MATCHING (PCOS)");
+    q.bindValue(":osname", osName);
+    q.exec();
+    this->accept();
 
 }

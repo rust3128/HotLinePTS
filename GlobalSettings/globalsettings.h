@@ -13,7 +13,8 @@ public:
     ///Опции
 
     enum OPTIONS{
-        OPT_MIMIMAZE_TO_TRAY =1000                  //Сворачивать в трей
+        OPT_MIMIMAZE_TO_TRAY =1000,                 //Сворачивать в трей
+        OPT_VNC_CLIENT_PATH = 1100                  //Путь к VNC Клинту
     };
 };
 

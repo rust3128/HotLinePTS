@@ -1,7 +1,9 @@
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
 #include "GlobalSettings/globalsettings.h"
-#include <LoggingCategories/loggingcategories.h>
+#include "LoggingCategories/loggingcategories.h"
+
+#include <QFileDialog>
 
 OptionsDialog::OptionsDialog(QWidget *parent) :
     QDialog(parent),
@@ -39,6 +41,10 @@ void OptionsDialog::createUI()
             ui->checkBoxTray->setChecked(q.value(1).toBool());
             ui->checkBoxTray->setText(q.value(2).toString().trimmed());
             break;
+        case GlobalSettings::OPT_VNC_CLIENT_PATH:
+            ui->lineEditVNClient->setText(q.value(1).toString().trimmed());
+            ui->labelVNClient->setText(q.value(2).toString().trimmed());
+            break;
         default:
             break;
         }
@@ -54,6 +60,12 @@ void OptionsDialog::on_checkBoxTray_clicked()
 {
     optChanged=true;
     opt[GlobalSettings::OPT_MIMIMAZE_TO_TRAY]=ui->checkBoxTray->isChecked();
+}
+
+void OptionsDialog::on_lineEditVNClient_textChanged(const QString &str)
+{
+    optChanged=true;
+    opt[GlobalSettings::OPT_VNC_CLIENT_PATH]=str.trimmed();
 }
 
 void OptionsDialog::on_buttonBox_accepted()
@@ -72,6 +84,9 @@ void OptionsDialog::on_buttonBox_accepted()
             case GlobalSettings::OPT_MIMIMAZE_TO_TRAY:
                 comment = ui->checkBoxTray->text().trimmed();
                 break;
+            case GlobalSettings::OPT_VNC_CLIENT_PATH:
+                comment = ui->labelVNClient->text();
+                break;
             default:
                 break;
             }
@@ -82,4 +97,15 @@ void OptionsDialog::on_buttonBox_accepted()
         }
     }
     this->accept();
+}
+
+
+
+void OptionsDialog::on_toolButtonFindVNC_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                QString::fromUtf8("Выберите запускаемый файл VNC клиента."),
+                                QDir::currentPath(),
+                                "Программы (*.exe);;Все файлы (*.*)");
+    ui->lineEditVNClient->setText(fileName);
 }

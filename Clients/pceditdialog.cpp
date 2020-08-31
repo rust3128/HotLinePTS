@@ -72,6 +72,7 @@ void PCEditDialog::createUI()
         }
     }
     ui->comboBoxPCType->setCurrentIndex(curIdx);
+
     ui->spinBoxPosID->setValue(q.value(1).toInt());
     ui->lineEditIP->setText(q.value(2).toString());
     ui->lineEditPass->setText(q.value(3).toString());
@@ -90,6 +91,19 @@ void PCEditDialog::createUI()
     ui->comboBoxModelPC->setCurrentIndex(curIdx);
     ui->comboBoxModelPC->setCurrentText("Не указано");
 
+    ui->comboBoxOSType->setModel(modelOSType);
+    ui->comboBoxOSType->setModelColumn(1);
+    rowcount=modelOSType->rowCount();
+    curIdx = -1;
+
+    for(int i =0;i<rowcount;++i){
+        if(modelOSType->data(modelOSType->index(i,0)).toInt() == q.value(0).toInt() ){
+            curIdx = i;
+            break;
+        }
+    }
+    ui->comboBoxOSType->setCurrentIndex(curIdx);
+    ui->comboBoxOSType->setCurrentText("Не указано");
 }
 
 void PCEditDialog::createModel()
@@ -101,6 +115,10 @@ void PCEditDialog::createModel()
     modelPCModel = new QSqlTableModel(this);
     modelPCModel->setTable("PCMODEL");
     modelPCModel->select();
+
+    modelOSType = new QSqlTableModel(this);
+    modelOSType->setTable("PCOS");
+    modelOSType->select();
 
 }
 
@@ -124,6 +142,8 @@ void PCEditDialog::on_toolButtonAddModelPC_clicked()
 void PCEditDialog::on_toolButtonAddOSType_clicked()
 {
     AddOSTypeDialog *osType = new AddOSTypeDialog(this);
-    osType->exec();
+    if(osType->exec() == QDialog::Accepted){
+
+    }
 
 }

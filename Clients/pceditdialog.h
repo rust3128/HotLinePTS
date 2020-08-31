@@ -35,6 +35,7 @@ private:
     uint objectID;
     QSqlTableModel *modelPCType;
     QSqlTableModel *modelPCModel;
+    QSqlTableModel *modelOSType;
 };
 
 #endif // PCEDITDIALOG_H
