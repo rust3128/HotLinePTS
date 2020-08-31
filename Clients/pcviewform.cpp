@@ -245,6 +245,5 @@ void PCViewForm::on_toolButtonPCEdit_clicked()
         parentIndex = idx;
     }
     PCEditDialog *pcDlg = new PCEditDialog(modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toUInt(),objectID,this);
-//    qInfo(logInfo()) << "column 2" << modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toString();
     pcDlg->exec();
 }
