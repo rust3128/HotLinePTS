@@ -113,8 +113,9 @@ void TreePCModel::setupModelData(TreeItem *parent)
     qInfo(logInfo()) << "Object ID in model" << objectID;
 
     QSqlQuery q;
-    q.prepare("select t.pctype, p.pos_id, p.ipadress, p.vncpass, p.pcmodel_id, p.pcos_id, p.pc_id from pclist p "
-               "left join pctype t on (t.pctype_id = p.pctype_id) "
+    q.prepare("select t.pctype, p.pos_id, p.ipadress, p.vncpass, p.pcmodel_id, p.pcos_id, p.pc_id, e.exetype from pclist p "
+               "left join pctype t on (t.pctype_id = p.pctype_id)"
+               "left join exetype e on e.exetype_id = p.exetype_id "
                "where p.object_id = :objectID "
                "order by 2");
     q.bindValue(":objectID", objectID);
@@ -127,12 +128,17 @@ void TreePCModel::setupModelData(TreeItem *parent)
     while (q.next()) {
         position = 0;
         columnData.clear();
-        columnData <<  ((q.value(0).toString().size()==0) ? "Не указано" : q.value(0).toString()) << "PosID "+q.value(1).toString() << q.value(6).toString();
+        columnData <<  ((q.value(0).toString().size()==0) ? "Не указано" : q.value(0).toString()) << ((q.value(7).toString().size()==0) ? "Не указано" : q.value(7).toString()) << q.value(6).toString();
+        parents.last()->appendChild(new TreeItem(columnData, parents.last()));
+
+        columnData.clear();
+        columnData << "PosID" << q.value(1).toString() << q.value(6).toString();
+        parents << parents.last()->child(parents.last()->childCount()-1);
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
 
         columnData.clear();
         columnData << "IP" << ((q.value(2).toString().size()==0) ? "Не известно" : q.value(2).toString())<< q.value(6).toString();
-        parents << parents.last()->child(parents.last()->childCount()-1);
+//        parents << parents.last()->child(parents.last()->childCount()-1);
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
 
         columnData.clear();

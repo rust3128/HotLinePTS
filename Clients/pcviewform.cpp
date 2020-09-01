@@ -160,6 +160,7 @@ void PCViewForm::slotChangeIBEConn()
 
 
 
+
 void PCViewForm::on_treeViewPC_doubleClicked(const QModelIndex &idx)
 {
 //    QModelIndex parentIndex = idx.parent();
@@ -193,7 +194,7 @@ void PCViewForm::on_treeViewPC_doubleClicked(const QModelIndex &idx)
     q.finish();
 
 #ifdef Q_OS_WIN
-    argum << ip << pass;
+    argum << "-host="+ip << "-password="+pass;
 #else
     command = "vncviewer";
     argum << ip;
@@ -209,23 +210,18 @@ void PCViewForm::on_treeViewPC_doubleClicked(const QModelIndex &idx)
 
 
     vncStart = new QProcess(this);
-
-//    connect(vncStart, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-//          [=](int exitCode, QProcess::ExitStatus exitStatus){ /* ... */ });
-
-
-//    connect(vncStart, SIGNAL(finished(int,QProcess::ExitStatus) , this, SLOT(finVNC()));
-//    vncStart->setReadChannel(QProcess::StandardError);
+    connect(vncStart, SIGNAL(finished(int)), this, SLOT(finishVNC(int)));
     vncStart->start(command,argum);
-//    connect(vncStart, &QProcess::finished(),this,&PCViewForm::slotFinVNC());
 }
 
-//void PCViewForm::slotFinVNC()
-//{
-//    QByteArray *arr = new QByteArray;
-//    *arr = vncStart->readAllStandardOutput ();
-//    qCritical(logCritical()) << "VNC Error" << arr->data();
-//}
+void PCViewForm::slotFinVNC(int arg)
+{
+    Q_UNUSED(arg)
+    QByteArray *arr = new QByteArray;
+    *arr = vncStart->readAllStandardOutput ();
+    qCritical(logCritical()) << "VNC Error" << arr->data();
+}
+
 void PCViewForm::on_treeViewPC_expanded(const QModelIndex &index)
 {
     Q_UNUSED(index)

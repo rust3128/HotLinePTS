@@ -26,7 +26,7 @@ protected:
 
 private slots:
     void slotChangeIBEConn();
-//    void slotFinVNC();
+    void slotFinVNC(int arg);
     void on_buttonBoxFB_clicked(QAbstractButton *button);
 
     void on_treeViewPC_doubleClicked(const QModelIndex &idx);

@@ -61,7 +61,7 @@ QToolBox::tab:first#toolBoxMain {background: #4ade00;
         <x>0</x>
         <y>0</y>
         <width>433</width>
-        <height>436</height>
+        <height>446</height>
        </rect>
       </property>
       <attribute name="label">
@@ -70,6 +70,11 @@ QToolBox::tab:first#toolBoxMain {background: #4ade00;
       <layout class="QGridLayout" name="gridLayout_4">
        <item row="0" column="0">
         <widget class="QTreeView" name="treeViewPC">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="selectionBehavior">
           <enum>QAbstractItemView::SelectRows</enum>
          </property>
@@ -109,7 +114,7 @@ QToolBox::tab:first#toolBoxMain {background: #4ade00;
         <x>0</x>
         <y>0</y>
         <width>433</width>
-        <height>436</height>
+        <height>446</height>
        </rect>
       </property>
       <attribute name="label">

@@ -136,5 +136,5 @@ void ClientInfoDialog::slotSelectTerminals(const QItemSelection &, const QItemSe
     if(ui->widgetPC->isHidden())
         ui->widgetPC->show();
     QModelIndexList selection = ui->tableViewObjects->selectionModel()->selectedIndexes();
-    emit signalSendID(clientID, modelObjects->data(modelObjects->index(selection.at(0).row(),0),Qt::DisplayRole).toUInt());
+    emit signalSendID(clientID, modelObjects->data(modelObjects->index(selection.at(0).row(),0),Qt::DisplayRole).toInt());
 }
