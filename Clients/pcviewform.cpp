@@ -58,6 +58,7 @@ void PCViewForm::slotGetObjectID(uint clnID, uint objID)
     modelPC = new TreePCModel(objectID,this);
     showObjectPC();
     showObjectFB();
+
 }
 
 void PCViewForm::changeEvent(QEvent *e)
@@ -240,6 +241,10 @@ void PCViewForm::on_toolButtonPCEdit_clicked()
     if(!parentIndex.isValid()){
         parentIndex = idx;
     }
-    PCEditDialog *pcDlg = new PCEditDialog(modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toUInt(),objectID,this);
-    pcDlg->exec();
+    PCEditDialog *pcDlg = new PCEditDialog(modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toInt(),objectID,this);
+    if(pcDlg->exec() == QDialog::Accepted){
+        modelPC->deleteLater();
+        modelPC = new TreePCModel(objectID,this);
+        showObjectPC();
+    }
 }

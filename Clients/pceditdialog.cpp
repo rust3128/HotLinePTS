@@ -6,7 +6,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QInputDialog>
-#include <QDir>
+#include <QMessageBox>
 
 PCEditDialog::PCEditDialog(int pcID, uint objID, QWidget *parent) :
     QDialog(parent),
@@ -73,7 +73,10 @@ void PCEditDialog::createUI()
         }
         ui->comboBoxPCType->setCurrentIndex(curIdx);
 
+        ui->comboBoxEXEType->setModel(modelEXEFile);
+        ui->comboBoxEXEType->setModelColumn(1);
         rowcount = modelEXEFile->rowCount();
+        qInfo(logInfo()) << "EXE Type row count" << rowcount;
         curIdx=-1;
         for(int i =0;i<rowcount;++i){
             if(modelEXEFile->data(modelEXEFile->index(i,0)).toInt() == q.value(1).toInt() ){
@@ -174,5 +177,66 @@ void PCEditDialog::on_buttonBox_rejected()
 
 void PCEditDialog::on_buttonBox_accepted()
 {
+    QSqlQuery q;
+    QString strSQL;
+    int exeTypeID  = 0;
+    int PCType = 0;
+    int pcModelID =0;
+    int pcOSID = 0;
+    int rowCount;
 
+    rowCount = modelPCType->rowCount();
+    for (int i = 0;i<rowCount;++i ) {
+        if(modelPCType->data(modelPCType->index(i,1)).toString() == ui->comboBoxPCType->currentText()){
+            PCType = modelPCType->data(modelPCType->index(i,0)).toInt();
+            break;
+        }
+    }
+
+    rowCount = modelEXEFile->rowCount();
+    for (int i = 0;i<rowCount;++i ) {
+        if(modelEXEFile->data(modelEXEFile->index(i,1)).toString() == ui->comboBoxEXEType->currentText()){
+            exeTypeID = modelEXEFile->data(modelEXEFile->index(i,0)).toInt();
+            break;
+        }
+    }
+
+    rowCount = modelPCModel->rowCount();
+    for (int i = 0;i<rowCount;++i ) {
+        if(modelPCModel->data(modelPCModel->index(i,1)).toString() == ui->comboBoxModelPC->currentText()){
+            pcModelID = modelPCModel->data(modelPCModel->index(i,0)).toInt();
+            break;
+        }
+    }
+
+    rowCount = modelOSType->rowCount();
+    for (int i = 0;i<rowCount;++i ) {
+        if(modelOSType->data(modelOSType->index(i,1)).toString() == ui->comboBoxOSType->currentText()){
+            pcOSID = modelOSType->data(modelOSType->index(i,0)).toInt();
+            break;
+        }
+    }
+
+
+    strSQL = QString("UPDATE OR INSERT INTO PCLIST (PC_ID, OBJECT_ID, EXETYPE_ID, POS_ID, PCTYPE_ID, IPADRESS, VNCPASS, PCMODEL_ID, PCOS_ID) "
+             "VALUES (%1, %2, %3, %4, %5, '%6', '%7', %8, %9) "
+             "MATCHING (PC_ID, OBJECT_ID)")
+            .arg(pcID)
+            .arg(objectID)
+            .arg(exeTypeID)
+            .arg(ui->spinBoxPosID->value())
+            .arg(PCType)
+            .arg(ui->lineEditIP->text().trimmed())
+            .arg(ui->lineEditPass->text().trimmed())
+            .arg(pcModelID)
+            .arg(pcOSID);
+    qInfo(logInfo()) << "strSQL" << strSQL;
+    if(!q.exec(strSQL)){
+        QString message = "Не удалось обновить данные о рабочем месте!\n"+q.lastError().text();
+        qCritical(logCritical()) << message;
+        QMessageBox::critical(this,"Ошибка", message);
+        return;
+
+    }
+    this->accept();
 }

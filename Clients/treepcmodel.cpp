@@ -128,7 +128,8 @@ void TreePCModel::setupModelData(TreeItem *parent)
     while (q.next()) {
         position = 0;
         columnData.clear();
-        columnData <<  ((q.value(0).toString().size()==0) ? "Не указано" : q.value(0).toString()) << ((q.value(7).toString().size()==0) ? "Не указано" : q.value(7).toString()) << q.value(6).toString();
+        columnData <<  (( (q.value(0).toString().size() ==0) || (q.value(0).toString()=="0") ) ? "Не указано" : q.value(0).toString())
+                   << (((q.value(7).toString().size()==0)||(q.value(7).toString()=="0")) ? "Не указано" : q.value(7).toString()) << q.value(6).toString();
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
 
         columnData.clear();
