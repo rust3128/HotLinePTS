@@ -61,35 +61,14 @@ QToolBox::tab:first#toolBoxMain {background: #4ade00;
         <x>0</x>
         <y>0</y>
         <width>433</width>
-        <height>446</height>
+        <height>438</height>
        </rect>
       </property>
       <attribute name="label">
        <string>Рабочие места</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <widget class="QTreeView" name="treeViewPC">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-         <property name="autoExpandDelay">
-          <number>-1</number>
-         </property>
-         <property name="animated">
-          <bool>true</bool>
-         </property>
-         <attribute name="headerVisible">
-          <bool>true</bool>
-         </attribute>
-        </widget>
-       </item>
-       <item row="1" column="0">
+       <item row="1" column="1">
         <widget class="QToolButton" name="toolButtonPCEdit">
          <property name="text">
           <string>...</string>
@@ -106,6 +85,47 @@ QToolBox::tab:first#toolBoxMain {background: #4ade00;
          </property>
         </widget>
        </item>
+       <item row="1" column="0">
+        <widget class="QToolButton" name="toolButtonPCAdd">
+         <property name="toolTip">
+          <string>Добавить рабочее место</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../resource.qrc">
+           <normaloff>:/Images/addpc.png</normaloff>:/Images/addpc.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="4">
+        <widget class="QTreeView" name="treeViewPC">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="autoExpandDelay">
+          <number>-1</number>
+         </property>
+         <property name="animated">
+          <bool>true</bool>
+         </property>
+         <attribute name="headerVisible">
+          <bool>false</bool>
+         </attribute>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="pageFBObject">
@@ -114,7 +134,7 @@ QToolBox::tab:first#toolBoxMain {background: #4ade00;
         <x>0</x>
         <y>0</y>
         <width>433</width>
-        <height>446</height>
+        <height>438</height>
        </rect>
       </property>
       <attribute name="label">

@@ -35,11 +35,14 @@ private slots:
 
     void on_toolButtonPCEdit_clicked();
 
+    void on_toolButtonPCAdd_clicked();
+
 private:
     void createConnections();
     void showObjectFB();
     void saveObjectFB();
     void showObjectPC();
+    void refreshModelPC();
 private:
     Ui::PCViewForm *ui;
     uint objectID;

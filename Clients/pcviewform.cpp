@@ -147,8 +147,9 @@ void PCViewForm::showObjectPC()
     ui->treeViewPC->resizeColumnToContents(0);
     ui->treeViewPC->resizeColumnToContents(1);
     ui->treeViewPC->hideColumn(2);
-    ui->treeViewPC->expandAll();
+//    ui->treeViewPC->expandAll();
 }
+
 
 void PCViewForm::slotChangeIBEConn()
 {
@@ -243,8 +244,22 @@ void PCViewForm::on_toolButtonPCEdit_clicked()
     }
     PCEditDialog *pcDlg = new PCEditDialog(modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toInt(),objectID,this);
     if(pcDlg->exec() == QDialog::Accepted){
-        modelPC->deleteLater();
-        modelPC = new TreePCModel(objectID,this);
-        showObjectPC();
+        refreshModelPC();
     }
+}
+
+void PCViewForm::on_toolButtonPCAdd_clicked()
+{
+    PCEditDialog *pcDlg = new PCEditDialog(-1,objectID,this);
+    if(pcDlg->exec() == QDialog::Accepted){
+        refreshModelPC();
+    }
+
+}
+
+void PCViewForm::refreshModelPC()
+{
+    modelPC->deleteLater();
+    modelPC = new TreePCModel(objectID,this);
+    showObjectPC();
 }

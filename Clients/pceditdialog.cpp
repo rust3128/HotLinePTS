@@ -48,21 +48,34 @@ void PCEditDialog::createUI()
     ui->labelTitle->setText("<html><head/><body><p align='center'><span style=' font-size:14pt; font-weight:600; color:#4e9a06;'>"+q.value(0).toString()+"<br>АЗС "+q.value(1).toString()+"<br>"+q.value(2).toString()+"</span></p></body></html>");
 //    ui->labelTitle->setText(q.value(0).toString()+"<br>АЗС "+q.value(1).toString()+"<br>"+q.value(2).toString());
     q.finish();
+    ui->comboBoxPCType->setModel(modelPCType);
+    ui->comboBoxPCType->setModelColumn(1);
+
+    ui->comboBoxEXEType->setModel(modelEXEFile);
+    ui->comboBoxEXEType->setModelColumn(1);
+
+    ui->comboBoxModelPC->setModel(modelPCModel);
+    ui->comboBoxModelPC->setModelColumn(1);
+
+    ui->comboBoxOSType->setModel(modelOSType);
+    ui->comboBoxOSType->setModelColumn(1);
+
     if(pcID<0){
         this->setWindowTitle("Добавление рабочего места");
+        ui->comboBoxPCType->setCurrentIndex(-1);
+        ui->comboBoxEXEType->setCurrentIndex(-1);
+        ui->comboBoxModelPC->setCurrentIndex(-1);
+        ui->comboBoxOSType->setCurrentIndex(-1);
+
     } else {
         this->setWindowTitle("Редактирование рабочего места");
-
-
-
         q.prepare("select p.pctype_id, p.exetype_id, p.pos_id, p.ipadress, p.vncpass, p.pcmodel_id, p.pcos_id from pclist p "
                   "where p.pc_id=:pcID");
         q.bindValue(":pcID", pcID);
         if(!q.exec()) qCritical(logCritical()) << "Не получены данные о рабочем месте" << q.lastError().text();
         q.next();
 
-        ui->comboBoxPCType->setModel(modelPCType);
-        ui->comboBoxPCType->setModelColumn(1);
+
         int rowcount = modelPCType->rowCount();
         int curIdx=-1;
         for(int i =0;i<rowcount;++i){
@@ -73,8 +86,7 @@ void PCEditDialog::createUI()
         }
         ui->comboBoxPCType->setCurrentIndex(curIdx);
 
-        ui->comboBoxEXEType->setModel(modelEXEFile);
-        ui->comboBoxEXEType->setModelColumn(1);
+
         rowcount = modelEXEFile->rowCount();
         qInfo(logInfo()) << "EXE Type row count" << rowcount;
         curIdx=-1;
@@ -92,8 +104,7 @@ void PCEditDialog::createUI()
         ui->lineEditIP->setText(q.value(3).toString());
         ui->lineEditPass->setText(q.value(4).toString());
 
-        ui->comboBoxModelPC->setModel(modelPCModel);
-        ui->comboBoxModelPC->setModelColumn(1);
+
         rowcount = modelPCModel->rowCount();
         curIdx = -1;
 
@@ -107,8 +118,7 @@ void PCEditDialog::createUI()
         if(curIdx<0)
             ui->comboBoxModelPC->setCurrentText("Не указано");
 
-        ui->comboBoxOSType->setModel(modelOSType);
-        ui->comboBoxOSType->setModelColumn(1);
+
         rowcount=modelOSType->rowCount();
         curIdx = -1;
 
@@ -216,20 +226,31 @@ void PCEditDialog::on_buttonBox_accepted()
             break;
         }
     }
-
-
-    strSQL = QString("UPDATE OR INSERT INTO PCLIST (PC_ID, OBJECT_ID, EXETYPE_ID, POS_ID, PCTYPE_ID, IPADRESS, VNCPASS, PCMODEL_ID, PCOS_ID) "
-             "VALUES (%1, %2, %3, %4, %5, '%6', '%7', %8, %9) "
-             "MATCHING (PC_ID, OBJECT_ID)")
-            .arg(pcID)
-            .arg(objectID)
-            .arg(exeTypeID)
-            .arg(ui->spinBoxPosID->value())
-            .arg(PCType)
-            .arg(ui->lineEditIP->text().trimmed())
-            .arg(ui->lineEditPass->text().trimmed())
-            .arg(pcModelID)
-            .arg(pcOSID);
+    if(pcID>0){
+        strSQL = QString("UPDATE OR INSERT INTO PCLIST (PC_ID, OBJECT_ID, EXETYPE_ID, POS_ID, PCTYPE_ID, IPADRESS, VNCPASS, PCMODEL_ID, PCOS_ID) "
+                 "VALUES (%1, %2, %3, %4, %5, '%6', '%7', %8, %9) "
+                 "MATCHING (PC_ID, OBJECT_ID)")
+                .arg(pcID)
+                .arg(objectID)
+                .arg(exeTypeID)
+                .arg(ui->spinBoxPosID->value())
+                .arg(PCType)
+                .arg(ui->lineEditIP->text().trimmed())
+                .arg(ui->lineEditPass->text().trimmed())
+                .arg(pcModelID)
+                .arg(pcOSID);
+    } else {
+        strSQL = QString("INSERT INTO PCLIST (OBJECT_ID, EXETYPE_ID, POS_ID, PCTYPE_ID, IPADRESS, VNCPASS, PCMODEL_ID, PCOS_ID) "
+                 "VALUES (%1, %2, %3, %4, '%5', '%6', %7, %8) ")
+                .arg(objectID)
+                .arg(exeTypeID)
+                .arg(ui->spinBoxPosID->value())
+                .arg(PCType)
+                .arg(ui->lineEditIP->text().trimmed())
+                .arg(ui->lineEditPass->text().trimmed())
+                .arg(pcModelID)
+                .arg(pcOSID);
+    }
     qInfo(logInfo()) << "strSQL" << strSQL;
     if(!q.exec(strSQL)){
         QString message = "Не удалось обновить данные о рабочем месте!\n"+q.lastError().text();
