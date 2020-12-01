@@ -5,6 +5,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QStringList>
+#include <QColor>
+#include <QAbstractItemModel>
 
 TreePCModel::TreePCModel(uint ID, QObject *parent)
     : QAbstractItemModel(parent),
@@ -78,11 +80,16 @@ QVariant TreePCModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
+//    if(role == Qt::DecorationRole && index.column()==0) {
+
+//        return QVariant(QColor(Qt::red));
+//    }
+
     if (role != Qt::DisplayRole)
         return QVariant();
 
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
-
+//    qInfo(logInfo()) << "Дата" << item->data(index.column()).toString();
     return item->data(index.column());
 }
 
@@ -113,11 +120,13 @@ void TreePCModel::setupModelData(TreeItem *parent)
     qInfo(logInfo()) << "Object ID in model" << objectID;
 
     QSqlQuery q;
-    q.prepare("select t.pctype, p.pos_id, p.ipadress, p.vncpass, p.pcmodel_id, p.pcos_id, p.pc_id, e.exetype, p.pctype_id from pclist p "
+    q.prepare("select t.pctype, p.pos_id, p.ipadress, p.vncpass, p.pcmodel_id, p.pcos_id, p.pc_id, e.exetype, p.pctype_id, p.exetype_id, m.modelname, r.zn, r.fn from pclist p "
                "left join pctype t on (t.pctype_id = p.pctype_id)"
                "left join exetype e on e.exetype_id = p.exetype_id "
+               "left join rrolist r on (p.object_id = r.object_id) and (p.pos_id = r.pos_id) "
+               "left join rromodel m on r.model_id = m.model_id "
                "where p.object_id = :objectID "
-               "order by 1, 2");
+               "order by p.pctype_id, p.pos_id");
     q.bindValue(":objectID", objectID);
     if(!q.exec()) {
         qCritical(logCritical()) << "Не удалось получить список рабочх мест." << q.lastError().text();
@@ -156,6 +165,24 @@ void TreePCModel::setupModelData(TreeItem *parent)
         columnData << "ОС" << ( ( (q.value(5).toString().size()==0) || q.value(5).toString()=="0" ) ? "Не указано" : q.value(5).toString() )
                    << q.value(6).toString();
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
+
+
+        if(q.value(9).toInt() == 1 || q.value(9).toInt() == 3){
+            columnData.clear();
+            columnData << "Касса" << q.value(10).toString() << q.value(6).toString();
+            parents.last()->appendChild(new TreeItem(columnData, parents.last()));
+
+            columnData.clear();
+            columnData << "ЗН" << q.value(11).toString() << q.value(6).toString();
+            parents << parents.last()->child(parents.last()->childCount()-1);
+            parents.last()->appendChild(new TreeItem(columnData, parents.last()));
+
+            columnData.clear();
+            columnData << "ФН" << q.value(12).toString() << q.value(6).toString();
+            parents.last()->appendChild(new TreeItem(columnData, parents.last()));
+
+            parents.pop_back();
+        }
 
         parents.pop_back();
 

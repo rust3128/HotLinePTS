@@ -60,6 +60,9 @@ void PCEditDialog::createUI()
     ui->comboBoxOSType->setModel(modelOSType);
     ui->comboBoxOSType->setModelColumn(1);
 
+    ui->comboBoxRROModel->setModel(modelRROType);
+    ui->comboBoxRROModel->setModelColumn(1);
+
     if(pcID<0){
         this->setWindowTitle("Добавление рабочего места");
         ui->comboBoxPCType->setCurrentIndex(-1);
@@ -96,6 +99,7 @@ void PCEditDialog::createUI()
                 break;
             }
         }
+
         ui->comboBoxEXEType->setCurrentIndex(curIdx);
         if(curIdx<0)
             ui->comboBoxEXEType->setCurrentText("Не указано");
@@ -131,6 +135,35 @@ void PCEditDialog::createUI()
         ui->comboBoxOSType->setCurrentIndex(curIdx);
         if(curIdx<0)
             ui->comboBoxOSType->setCurrentText("Не указано");
+
+        QSqlQuery qr;
+
+        qr.prepare("select r.rro_id, r.model_id, r.zn, r.fn from rrolist r "
+                   "where r.object_id = :objectID and r.pos_id = :posID");
+        qr.bindValue(":objectID", objectID);
+        qr.bindValue(":posID", q.value(2).toInt());
+        if(!qr.exec()) qCritical(logCritical()) << "Не получены данные о кассовом аппарате" << qr.lastError().text();
+        qr.next();
+            rowcount=modelRROType->rowCount();
+            qInfo(logInfo()) << "RRO model ID" << qr.value(1).toInt();
+            for(int i=0;i<rowcount;++i){
+                if(modelRROType->data(modelRROType->index(i,0)).toInt()==qr.value(1).toInt()){
+                    curIdx=i;
+                    break;
+                }
+            }
+            ui->comboBoxRROModel->setCurrentIndex(curIdx);
+            rroID=qr.value(0).toInt();
+            ui->lineEditZN->setText(qr.value(2).toString());
+            ui->lineEditFN->setText(qr.value(3).toString());
+
+
+
+        if(q.value(1).toInt() != 1 || q.value(1).toInt() != 3){
+            ui->spinBoxPosID->hide();
+            ui->labelPosID->hide();
+            ui->groupBoxRRO->hide();
+        }
     }
 }
 
@@ -152,6 +185,9 @@ void PCEditDialog::createModel()
     modelEXEFile->setTable("EXETYPE");
     modelEXEFile->select();
 
+    modelRROType = new QSqlTableModel(this);
+    modelRROType->setTable("RROMODEL");
+    modelRROType->select();
 }
 
 void PCEditDialog::on_toolButtonAddModelPC_clicked()
@@ -260,4 +296,21 @@ void PCEditDialog::on_buttonBox_accepted()
 
     }
     this->accept();
+}
+
+void PCEditDialog::on_comboBoxEXEType_activated(int idx)
+{
+    int exeType = modelEXEFile->data(modelEXEFile->index(idx,0)).toInt();
+    if((exeType == 1) || (exeType == 3)){
+        ui->spinBoxPosID->show();
+        ui->labelPosID->show();
+        ui->groupBoxRRO->show();
+        //        ui->comboBoxRROModel->setCurrentIndex(-1);
+        //        ui->lineEditFN->clear();
+        //        ui->lineEditZN->clear();
+    } else {
+        ui->spinBoxPosID->hide();
+        ui->labelPosID->hide();
+        ui->groupBoxRRO->hide();
+    }
 }

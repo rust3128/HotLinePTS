@@ -212,7 +212,7 @@ void PCViewForm::on_treeViewPC_doubleClicked(const QModelIndex &idx)
 
 
     vncStart = new QProcess(this);
-    connect(vncStart, SIGNAL(finished(int)), this, SLOT(finishVNC(int)));
+    connect(vncStart, SIGNAL(finished(int)), this, SLOT(finVnc(int)));
     vncStart->start(command,argum);
 }
 

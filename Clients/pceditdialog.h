@@ -30,6 +30,8 @@ private slots:
 
     void on_buttonBox_accepted();
 
+    void on_comboBoxEXEType_activated(int idx);
+
 private:
     void createUI();
     void createModel();
@@ -37,10 +39,12 @@ private:
     Ui::PCEditDialog *ui;
     int pcID;
     uint objectID;
+    int rroID;
     QSqlTableModel *modelPCType;
     QSqlTableModel *modelPCModel;
     QSqlTableModel *modelOSType;
     QSqlTableModel *modelEXEFile;
+    QSqlTableModel *modelRROType;
 };
 
 #endif // PCEDITDIALOG_H
