@@ -63,12 +63,16 @@ void PCEditDialog::createUI()
     ui->comboBoxRROModel->setModel(modelRROType);
     ui->comboBoxRROModel->setModelColumn(1);
 
+    qInfo(logInfo()) << "PC ID" << pcID;
+
     if(pcID<0){
         this->setWindowTitle("Добавление рабочего места");
         ui->comboBoxPCType->setCurrentIndex(-1);
         ui->comboBoxEXEType->setCurrentIndex(-1);
         ui->comboBoxModelPC->setCurrentIndex(-1);
         ui->comboBoxOSType->setCurrentIndex(-1);
+        rroID=-1;
+        ui->comboBoxRROModel->setCurrentIndex(-1);
 
     } else {
         this->setWindowTitle("Редактирование рабочего места");
@@ -159,7 +163,7 @@ void PCEditDialog::createUI()
 
 
 
-        if(q.value(1).toInt() != 1 || q.value(1).toInt() != 3){
+        if( !(q.value(1).toInt() == 1) || (q.value(1).toInt() == 3)){
             ui->spinBoxPosID->hide();
             ui->labelPosID->hide();
             ui->groupBoxRRO->hide();
@@ -230,6 +234,7 @@ void PCEditDialog::on_buttonBox_accepted()
     int pcModelID =0;
     int pcOSID = 0;
     int rowCount;
+    int RROModel = 0;
 
     rowCount = modelPCType->rowCount();
     for (int i = 0;i<rowCount;++i ) {
@@ -275,6 +280,7 @@ void PCEditDialog::on_buttonBox_accepted()
                 .arg(ui->lineEditPass->text().trimmed())
                 .arg(pcModelID)
                 .arg(pcOSID);
+
     } else {
         strSQL = QString("INSERT INTO PCLIST (OBJECT_ID, EXETYPE_ID, POS_ID, PCTYPE_ID, IPADRESS, VNCPASS, PCMODEL_ID, PCOS_ID) "
                  "VALUES (%1, %2, %3, %4, '%5', '%6', %7, %8) ")
@@ -294,6 +300,37 @@ void PCEditDialog::on_buttonBox_accepted()
         QMessageBox::critical(this,"Ошибка", message);
         return;
 
+    }
+    q.finish();
+    if(ui->groupBoxRRO->isVisible()){
+        rowCount = modelRROType->rowCount();
+        for (int i = 0;i<rowCount;++i ) {
+            if(modelRROType->data(modelRROType->index(i,1)).toString() == ui->comboBoxRROModel->currentText()){
+                RROModel = modelRROType->data(modelRROType->index(i,0)).toInt();
+                break;
+            }
+        }
+
+        if(rroID>0){
+            q.prepare("UPDATE RROLIST SET POS_ID = :posID, MODEL_ID = :modelID, ZN = :zn, FN = :fn WHERE (RRO_ID = :rroID)");
+
+        } else {
+            q.prepare("INSERT INTO RROLIST (OBJECT_ID, POS_ID, MODEL_ID, ZN, FN) VALUES (:objectID, :posID, :modelID, :zn, :fn)");
+        }
+        q.bindValue(":objectID",objectID);
+        q.bindValue(":posID", ui->spinBoxPosID->value());
+        q.bindValue(":modelID",RROModel);
+        q.bindValue(":zn", ui->lineEditZN->text().trimmed());
+        q.bindValue(":fn",ui->lineEditFN->text().trimmed());
+        q.bindValue(":rroID", rroID);
+
+        if(!q.exec()){
+            QString message = "Не удалось обновить данные об кассовом аппарате!\n"+q.lastError().text();
+            qCritical(logCritical()) << message;
+            QMessageBox::critical(this,"Ошибка", message);
+            return;
+
+        }
     }
     this->accept();
 }

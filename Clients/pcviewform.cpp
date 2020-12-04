@@ -146,7 +146,7 @@ void PCViewForm::showObjectPC()
 
     ui->treeViewPC->resizeColumnToContents(0);
     ui->treeViewPC->resizeColumnToContents(1);
-    ui->treeViewPC->hideColumn(2);
+//    ui->treeViewPC->hideColumn(2);
 //    ui->treeViewPC->expandAll();
 }
 
@@ -241,8 +241,11 @@ void PCViewForm::on_toolButtonPCEdit_clicked()
     QModelIndex parentIndex = idx.parent();
     if(!parentIndex.isValid()){
         parentIndex = idx;
+    } else {
+        parentIndex = parentIndex.parent();
     }
-    PCEditDialog *pcDlg = new PCEditDialog(modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toInt(),objectID,this);
+    int pcID = modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toInt();
+    PCEditDialog *pcDlg = new PCEditDialog(pcID,objectID,this);
     if(pcDlg->exec() == QDialog::Accepted){
         refreshModelPC();
     }
