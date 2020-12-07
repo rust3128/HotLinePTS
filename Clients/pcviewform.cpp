@@ -146,7 +146,7 @@ void PCViewForm::showObjectPC()
 
     ui->treeViewPC->resizeColumnToContents(0);
     ui->treeViewPC->resizeColumnToContents(1);
-//    ui->treeViewPC->hideColumn(2);
+    ui->treeViewPC->hideColumn(2);
 //    ui->treeViewPC->expandAll();
 }
 
@@ -174,6 +174,12 @@ void PCViewForm::on_treeViewPC_doubleClicked(const QModelIndex &idx)
     QModelIndex parentIndex = idx.parent();
     if(!parentIndex.isValid()){
         parentIndex = idx;
+    }
+
+    int pcID = modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toUInt();
+    if(pcID == 0){
+        parentIndex = parentIndex.parent();
+        pcID = modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toUInt();
     }
 
     QStringList argum;
@@ -212,7 +218,7 @@ void PCViewForm::on_treeViewPC_doubleClicked(const QModelIndex &idx)
 
 
     vncStart = new QProcess(this);
-    connect(vncStart, SIGNAL(finished(int)), this, SLOT(finVnc(int)));
+    connect(vncStart, SIGNAL(finished(int)), this, SLOT(slotFinVNC(int)));
     vncStart->start(command,argum);
 }
 
@@ -220,7 +226,7 @@ void PCViewForm::slotFinVNC(int arg)
 {
     Q_UNUSED(arg)
     QByteArray *arr = new QByteArray;
-    *arr = vncStart->readAllStandardOutput ();
+    *arr = vncStart->readAllStandardError();
     qCritical(logCritical()) << "VNC Error" << arr->data();
 }
 
@@ -234,6 +240,7 @@ void PCViewForm::on_treeViewPC_expanded(const QModelIndex &index)
 
 void PCViewForm::on_toolButtonPCEdit_clicked()
 {
+
     QModelIndex idx = ui->treeViewPC->currentIndex();
     if(!idx.isValid()){
         return;
@@ -241,11 +248,18 @@ void PCViewForm::on_toolButtonPCEdit_clicked()
     QModelIndex parentIndex = idx.parent();
     if(!parentIndex.isValid()){
         parentIndex = idx;
-    } else {
-        parentIndex = parentIndex.parent();
     }
-    int pcID = modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toInt();
-    PCEditDialog *pcDlg = new PCEditDialog(pcID,objectID,this);
+
+    int ID = modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toInt();
+    if (ID == 0){
+        parentIndex = parentIndex.parent();
+        ID = modelPC->data(modelPC->index(parentIndex.row(),2,QModelIndex()),Qt::DisplayRole).toInt();
+    }
+
+    qInfo(logInfo()) << "Parrent INDEX" << parentIndex;
+    qInfo(logInfo()) << "PC ID" << ID;
+
+    PCEditDialog *pcDlg = new PCEditDialog(ID,objectID,this);
     if(pcDlg->exec() == QDialog::Accepted){
         refreshModelPC();
     }
