@@ -120,10 +120,12 @@ void TreePCModel::setupModelData(TreeItem *parent)
     qInfo(logInfo()) << "Object ID in model" << objectID;
 
     QSqlQuery q;
-    q.prepare("select t.pctype, p.pos_id, p.ipadress, p.vncpass, p.pcmodel_id, p.pcos_id, p.pc_id, e.exetype, p.pctype_id, p.exetype_id, m.modelname, r.zn, r.fn from pclist p "
+    q.prepare("select t.pctype, p.pos_id, p.ipadress, p.vncpass, p.pcmodel_id, p.pcos_id, p.pc_id, e.exetype, p.pctype_id, p.exetype_id, m.modelname, r.zn, r.fn, l.pcmodel, o.pcos  from pclist p "
                "left join pctype t on (t.pctype_id = p.pctype_id)"
                "left join exetype e on e.exetype_id = p.exetype_id "
                "left join rrolist r on (p.object_id = r.object_id) and (p.pos_id = r.pos_id) "
+               "left join pcmodel l on (l.pcmodel_id = p.pcmodel_id) "
+               "left join pcos o on (o.pcos_id = p.pcos_id) "
                "left join rromodel m on r.model_id = m.model_id "
                "where p.object_id = :objectID "
                "order by p.pctype_id, p.pos_id");
@@ -134,6 +136,7 @@ void TreePCModel::setupModelData(TreeItem *parent)
     }
     QVector<QVariant> columnData;
     int position;
+
     while (q.next()) {
         position = 0;
         columnData.clear();
@@ -157,12 +160,12 @@ void TreePCModel::setupModelData(TreeItem *parent)
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
 
         columnData.clear();
-        columnData << "Модель" << ( ( (q.value(4).toString().size()==0) || (q.value(4).toString()=="0") ) ? "Не указано" : q.value(4).toString() )
+        columnData << "Модель" << ( ( (q.value(4).toString().size()==0) || (q.value(4).toString()=="0") ) ? "Не указано" : q.value(13).toString() )
                    << q.value(6).toString();
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
 
         columnData.clear();
-        columnData << "ОС" << ( ( (q.value(5).toString().size()==0) || q.value(5).toString()=="0" ) ? "Не указано" : q.value(5).toString() )
+        columnData << "ОС" << ( ( (q.value(5).toString().size()==0) || q.value(5).toString()=="0" ) ? "Не указано" : q.value(14).toString() )
                    << q.value(6).toString();
         parents.last()->appendChild(new TreeItem(columnData, parents.last()));
 

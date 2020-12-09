@@ -56,6 +56,7 @@ void PCViewForm::slotGetObjectID(uint clnID, uint objID)
     clientID = clnID;
 
     modelPC = new TreePCModel(objectID,this);
+    ui->framObjectInfo->hide();
     showObjectPC();
     showObjectFB();
 
