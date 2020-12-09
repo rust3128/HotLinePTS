@@ -148,20 +148,17 @@ void PCEditDialog::createUI()
         qr.bindValue(":posID", q.value(2).toInt());
         if(!qr.exec()) qCritical(logCritical()) << "Не получены данные о кассовом аппарате" << qr.lastError().text();
         qr.next();
-            rowcount=modelRROType->rowCount();
-            qInfo(logInfo()) << "RRO model ID" << qr.value(1).toInt();
-            for(int i=0;i<rowcount;++i){
-                if(modelRROType->data(modelRROType->index(i,0)).toInt()==qr.value(1).toInt()){
+        rowcount=modelRROType->rowCount();
+        for(int i=0;i<rowcount;++i){
+            if(modelRROType->data(modelRROType->index(i,0)).toInt()==qr.value(1).toInt()){
                     curIdx=i;
                     break;
-                }
             }
+        }
             ui->comboBoxRROModel->setCurrentIndex(curIdx);
-            rroID=qr.value(0).toInt();
+            rroID = (rowcount >1 ) ?  qr.value(0).toInt() : -1 ;
             ui->lineEditZN->setText(qr.value(2).toString());
             ui->lineEditFN->setText(qr.value(3).toString());
-
-
 
         if( !(q.value(1).toInt() == 1) || (q.value(1).toInt() == 3)){
             ui->spinBoxPosID->hide();
@@ -268,18 +265,16 @@ void PCEditDialog::on_buttonBox_accepted()
         }
     }
     if(pcID>0){
-        strSQL = QString("UPDATE OR INSERT INTO PCLIST (PC_ID, OBJECT_ID, EXETYPE_ID, POS_ID, PCTYPE_ID, IPADRESS, VNCPASS, PCMODEL_ID, PCOS_ID) "
-                 "VALUES (%1, %2, %3, %4, %5, '%6', '%7', %8, %9) "
-                 "MATCHING (PC_ID, OBJECT_ID)")
-                .arg(pcID)
-                .arg(objectID)
-                .arg(exeTypeID)
-                .arg(ui->spinBoxPosID->value())
-                .arg(PCType)
-                .arg(ui->lineEditIP->text().trimmed())
-                .arg(ui->lineEditPass->text().trimmed())
-                .arg(pcModelID)
-                .arg(pcOSID);
+        strSQL = QString("UPDATE PCLIST SET EXETYPE_ID = %1,POS_ID = %2,PCTYPE_ID = %3,IPADRESS = '%4',VNCPASS = '%5',PCMODEL_ID = %6 , PCOS_ID = %7 "
+                         "WHERE (PC_ID = %8)")
+                                .arg(exeTypeID)
+                                .arg(ui->spinBoxPosID->value())
+                                .arg(PCType)
+                                .arg(ui->lineEditIP->text().trimmed())
+                                .arg(ui->lineEditPass->text().trimmed())
+                                .arg(pcModelID)
+                                .arg(pcOSID)
+                                .arg(pcID);
 
     } else {
         strSQL = QString("INSERT INTO PCLIST (OBJECT_ID, EXETYPE_ID, POS_ID, PCTYPE_ID, IPADRESS, VNCPASS, PCMODEL_ID, PCOS_ID) "
