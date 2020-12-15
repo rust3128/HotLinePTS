@@ -20,7 +20,7 @@ public:
     ~PCViewForm();
 
 public slots:
-    void slotGetObjectID(uint clnID, uint objID);
+    void slotGetObjectID(uint clnID, uint objID, QString name, QString phObj, QString phDir);
 protected:
     void changeEvent(QEvent *e);
 
@@ -43,6 +43,7 @@ private:
     void saveObjectFB();
     void showObjectPC();
     void refreshModelPC();
+
 private:
     Ui::PCViewForm *ui;
     uint objectID;

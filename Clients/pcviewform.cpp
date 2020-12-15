@@ -50,13 +50,21 @@ PCViewForm::~PCViewForm()
     delete ui;
 }
 
-void PCViewForm::slotGetObjectID(uint clnID, uint objID)
+void PCViewForm::slotGetObjectID(uint clnID, uint objID, QString name, QString phObj, QString phDir)
 {
     objectID = objID;
     clientID = clnID;
 
     modelPC = new TreePCModel(objectID,this);
-    ui->framObjectInfo->hide();
+
+    ui->textBrowserName->setText(name);
+    ui->textBrowserName->setAlignment(Qt::AlignHCenter);
+    ui->lineEditphAZS->setText(phObj);
+    ui->lineEditphDir->setText(phDir);
+
+    ui->toolButtonCallAZS->setEnabled(false);
+    ui->toolButtonCallDir->setEnabled(false);
+
     showObjectPC();
     showObjectFB();
 
@@ -73,6 +81,8 @@ void PCViewForm::changeEvent(QEvent *e)
         break;
     }
 }
+
+
 
 
 
@@ -281,3 +291,5 @@ void PCViewForm::refreshModelPC()
     modelPC = new TreePCModel(objectID,this);
     showObjectPC();
 }
+
+
